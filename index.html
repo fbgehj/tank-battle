@@ -103,6 +103,7 @@
   var enemiesTotal = 0, enemiesSpawned = 0, spawnTimer = 0, stateTimer = 0;
   var player = null, enemies = [], bullets = [], explosions = [];
   var keys = {};
+  var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
   function buildGrid() { grid = LEVEL_MAP.map(function (r) { return r.slice(); }); }
 
@@ -283,12 +284,12 @@
     spawnExplosion(6 * CELL + CELL / 2, 12 * CELL + CELL / 2);
     playSound('explode');
     state = 'gameover'; stateTimer = 1e9;
-    msgEl.textContent = '基地被摧毁，游戏结束！\n按 Enter 重新开始';
+    msgEl.textContent = isTouch ? '基地被摧毁，游戏结束！\n点击屏幕重新开始' : '基地被摧毁，游戏结束！\n按 Enter 重新开始';
     updateHud();
   }
   function gameOver() {
     state = 'gameover'; stateTimer = 1e9;
-    msgEl.textContent = '游戏结束！\n按 Enter 重新开始';
+    msgEl.textContent = isTouch ? '游戏结束！\n点击屏幕重新开始' : '游戏结束！\n按 Enter 重新开始';
   }
 
   function spawnLogic(dt) {
@@ -420,9 +421,9 @@
     ctx.fillStyle = '#f1c40f'; ctx.font = 'bold 38px sans-serif'; ctx.textAlign = 'center';
     ctx.fillText('坦克大战', W / 2, H / 2 - 40);
     ctx.fillStyle = '#fff'; ctx.font = '20px sans-serif';
-    ctx.fillText('按 Enter 开始游戏', W / 2, H / 2 + 10);
+    ctx.fillText(isTouch ? '点击屏幕开始游戏' : '按 Enter 开始游戏', W / 2, H / 2 + 10);
     ctx.font = '15px sans-serif'; ctx.fillStyle = '#b0b8c0';
-    ctx.fillText('方向键 / WASD 移动 · 空格 射击', W / 2, H / 2 + 42);
+    ctx.fillText(isTouch ? '使用下方触屏按钮移动和射击' : '方向键 / WASD 移动 · 空格 射击', W / 2, H / 2 + 42);
   }
 
   // 简单音效（WebAudio）
